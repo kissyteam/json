@@ -1,7 +1,7 @@
 /*
 Copyright 2014, modulex-json@1.0.3
 MIT Licensed
-build time: Thu, 16 Oct 2014 03:55:44 GMT
+build time: Fri, 05 Dec 2014 05:34:46 GMT
 */
 modulex.add("json", [], function(require, exports, module) {
 
@@ -317,7 +317,7 @@ jsonParser = function (exports) {
         ],
         [
           'j',
-          /^true|false/,
+          /^(true|false)/,
           0
         ],
         [
