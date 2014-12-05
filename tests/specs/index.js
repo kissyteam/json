@@ -363,5 +363,9 @@ describe('json', function () {
                     }).to.throw();
             }
         });
+
+        it('json.parse(\'{"a":[{"a":null,"c":false}]}\'); should work', function() {
+            expect(Json.parse('{"a":[{"a":null,"c":false}]}')).to.deep.equal({"a":[{"a":null,"c":false}]});
+        });
     });
 });
