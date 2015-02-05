@@ -1,8 +1,4 @@
-/*
-Copyright 2014, modulex-json@1.0.4
-MIT Licensed
-build time: Fri, 05 Dec 2014 09:22:44 GMT
-*/
+//! Copyright 2015, modulex-json@1.0.4 MIT Licensed, build time: Thu, 05 Feb 2015 06:35:32 GMT 
 modulex.add("json", [], function(require, exports, module) {
 
 /*
