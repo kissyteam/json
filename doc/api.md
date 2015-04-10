@@ -12,7 +12,7 @@ IE6-8等老的浏览器未提供`JSON`的原生支持，`json`模块提供“_po
 
 ### parse(str\[, reviver\])
 
-用于将文本解析成JavaScript的值。
+用于将文本解析成JavaScript值。
 
 #### 参数
 
@@ -22,11 +22,11 @@ IE6-8等老的浏览器未提供`JSON`的原生支持，`json`模块提供“_po
 
 **reviver:Function** 可选
 
-对JSON对象进行深度优先遍历，可以对每一个遍历到得值进行转换，该方法必须有返回值，否则最终将得到`undefined`。需要注意的是，`reviver`接收到的参数为`(key, value)`，而不是如`Array`的`forEach|map|filter|some`等方法那样是`(value, key)。
+对遍历得到的每个值进行转换，遍历的顺序为自底向上。该方法必须有返回值，否则最终将得到`undefined`。需要注意的是，`reviver`接收到的参数为`(key, value)`，而不是如`Array`的`forEach|map|filter|some`等方法那样是`(value, key)。
 
-#### 返回:\*
+#### 返回
 
-返回解析后的对象（注意这里是广义的对象，也包括字符串，数字，布尔值和`null`）。
+JavaScript值，可以是对象，字符串，数字，布尔值和`null`。
 
 #### 抛错
 
@@ -36,8 +36,9 @@ IE6-8等老的浏览器未提供`JSON`的原生支持，`json`模块提供“_po
 
 ### stringify(value\[, replacer\[, space\]\])
 
-跟`parse`正好相反，用于将JavaScript的值转成字符串。
+做与`parse`正好相反的工作，将JavaScript值转成字符串。
 
+#### 参数
 
 **value:\***
 
@@ -45,10 +46,14 @@ IE6-8等老的浏览器未提供`JSON`的原生支持，`json`模块提供“_po
 
 **replacer:Function|Array** 可选
 
-当为`Function`时，可以对每个遍历到的值进行改变；也可以是个包含字符串或数字的数组，相当于属性白名单。
+当为`Function`时，对每个遍历到的值进行改变，遍历的顺序为自顶向下，同样需要注意的是，`reviver`接收到的参数为`(key, value)`；也可以是个包含字符串或数字的数组，相当于属性白名单。
 
 **space:String|Number** 可选
 
 默认返回的字符串是最小化的，没有缩进、换行；该参数用于指定缩进，以输出“美观”的JSON字符串。当为字符串时，用它（无论是空白字符还是类似`--`的字符串）作为缩进文本，当为数字时，使用数字指定的个数的空格作为缩进。最后，要注意的一点，无论是字符串还是数字，缩进字符串长度都不会超过10（如果是字符串，将被截断）。
+
+#### 返回
+
+字符串或`undefined`。
 
 参考：<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify>

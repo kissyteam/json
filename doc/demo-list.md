@@ -17,7 +17,7 @@ modulex.use("json", function(JSON) {
 	output("true");// true
 	output("false");// false
 	output("null");// null
-	output("\"foo\"");// "foo"
+	output("\"string\"");// "string"
 });
 ```
 
@@ -79,7 +79,7 @@ modulex.use("json", function(JSON) {
 			__: {
 				___: 2
 			},
-			____: [3, 4]// BUG！注意这里会产生死循环，原生的JSON没有这个问题
+			____: [3, 4]
 		}),
 		o = JSON.parse(str, function(k, v) {
 			console.log("k=", k, "v=", v);
@@ -107,7 +107,7 @@ Object { _=2, __={ ___=4 }, ____=[6, 8] }
 
 ### stringify(value\[, replacer\[, space\]\])
 
-将JavaSript对象转成JSON字符串并返回，只有一个case除外，就是`value`为`undefined`（或者不传）时，直接返回`undefined`本身。
+将JavaScript对象转成JSON字符串并返回，只有一个case除外，就是`value`为`undefined`（或者不传）时，直接返回`undefined`本身。
 
 **一般case**
 
@@ -145,7 +145,16 @@ modulex.use("json", function(JSON) {
 	output(Boolean);// undefined
 	output(Math);// {}
 	output({ a: undefined, b: Date });// {}
-	output( Object.create(null, { x: { value: 1, enumerable: false }, y: { value: 2, enumerable: true } }) );// {"2":2}
+	output(Object.create(null, {// {"y":2}
+		x: {
+			value: 1,
+			enumerable: false
+		},
+		y: {
+			value: 2,
+			enumerable: true
+		}
+	}));
 });
 ```
 
@@ -155,31 +164,16 @@ modulex.use("json", function(JSON) {
 
 ```javascript
 modulex.use("json", function(JSON) {
-	var o = {
-			_: 1,
-			__: {
-				___: 2
-			},
-			____: [3, 4]
+	console.info(JSON.stringify({
+		_: 1,
+		__: {
+			___: 2
 		},
-		str = JSON.stringify(o, function(k, v) {
-			console.log("k=", k, "v=", v);
-			if (typeof v === "number") {
-				return v * 2;
-			}
-			return v;
-		});
-	console.info(str);// {"_":2,"__":{"___":4},"____":[6,8]}
-	// 使用`replacer`将对象序列化，并转换其中的非Unicode字符为Unicode
-	console.info(JSON.stringify({// {"en":"hello","ch":"\u4f60\u597d","jp":"\u3053\u3093\u306b\u3061\u306f"}
-		en: "hello",
-		ch: "你好",
-		jp: "こんにちは"
+		____: [3, 4]
 	}, function(k, v) {
-		if (typeof v === "string") {
-			return v.replace(/[\u0080-\uFFFF]/g, function(m) {
-				return "\\u" + ("0000" + m.charCodeAt(0).toString(16)).slice(-4);
-			});
+		console.log("k=", k, "v=", v);
+		if (typeof v === "number") {
+			return v * 2;
 		}
 		return v;
 	}));
@@ -197,6 +191,25 @@ k=____ v=[3, 4]
 k=0 v=3
 k=1 v=4
 {"_":2,"__":{"___":4},"____":[6,8]}
+```
+
+利用`replacer`将对象序列化，并转换其中的非Unicode字符为Unicode：
+
+```
+modulex.use("json", function(JSON) {
+	console.info(JSON.stringify({// {"en":"hello","ch":"\u4f60\u597d","jp":"\u3053\u3093\u306b\u3061\u306f"}
+		en: "hello",
+		ch: "你好",
+		jp: "こんにちは"
+	}, function(k, v) {
+		if (typeof v === "string") {
+			return v.replace(/[\u0080-\uFFFF]/g, function(m) {
+				return "\\u" + ("0000" + m.charCodeAt(0).toString(16)).slice(-4);
+			});
+		}
+		return v;
+	}));
+});
 ```
 
 `replacer`为字符串数组是可用来作为白名单（注意白名单是逐层应用的）。
