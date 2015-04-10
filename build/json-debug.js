@@ -1,4 +1,4 @@
-//! Copyright 2015, kissy-json@1.0.4 MIT Licensed, build time: Thu, 05 Feb 2015 06:36:16 GMT 
+//! Copyright 2015, kissy-json@1.0.4 MIT Licensed, build time: Fri, 10 Apr 2015 07:02:59 GMT 
 modulex.add("json", [], function(require, exports, module) {
 
 /*
@@ -1212,6 +1212,7 @@ jsonParse = function (exports) {
           if (newElement !== undefined) {
             newVal[newVal.length] = newElement;
           }
+          i++;
         }
         val = newVal;
       } else {
